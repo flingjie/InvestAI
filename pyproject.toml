@@ -16,4 +16,5 @@ dependencies = [
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
     "slack-sdk>=3.39.0",
+    "yfinance>=1.0",
 ]

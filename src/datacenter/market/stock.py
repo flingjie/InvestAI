@@ -2,6 +2,9 @@ import akshare as ak
 import pandas as pd
 from log import logger
 from datetime import datetime
+from utils.stock import identify_market
+from config.const import MarketType
+import yfinance as yf
 
 
 class StockDataSource:
@@ -20,7 +23,16 @@ class StockDataSource:
         """
         try:
             if period == "daily":
-                df = ak.stock_zh_a_daily(symbol=symbol, start_date="20200101", adjust=adjust)
+                market_type = identify_market(symbol=symbol)
+                if market_type == MarketType.SH or market_type == MarketType.SZ:
+                        df = ak.stock_zh_a_daily(symbol=symbol, start_date="20200101", adjust=adjust)
+                elif market_type == MarketType.HK or market_type == MarketType.US:
+                    apple = yf.Ticker(symbol)
+                    df = apple.history(period="6mo", interval="1d")
+                    df = df.reset_index()
+                    df.columns = df.columns.str.lower()
+                else:
+                    raise ValueError(f'Unsupported symbol: {symbol}')
             else:
                 raise ValueError(f"Unsupported period: {period}")
             return df
@@ -28,22 +40,6 @@ class StockDataSource:
             logger.opt(exception=e).error(f"Error fetching Kline: {e}")
             return pd.DataFrame()
 
-    def get_last_n_years_financials(self, symbol: str, n: int = 3) -> pd.DataFrame:
-        """
-        获取财务指标数据，例如 ROE, EPS, 净利润等
-        :param symbol: 股票代码
-        :param years: 最近几年数据，默认5年
-        :return: 包含财务指标的DataFrame
-        """
-        try:
-            data = []
-            for year in range(years):
-                df = ak.stock_zh_a_financial(symbol=symbol, period="yearly", start_date=f"{start_year}{year+1}0101")
-                data.append(df)
-            return pd.concat(data, axis=0)
-        except Exception as e:
-            logger.error(f"Error fetching financials: {e}")
-            return pd.DataFrame()
 
     def get_last_n_years_financials(self, symbol: str, n: int = 3) -> pd.DataFrame:
         """
@@ -172,14 +168,25 @@ class StockDataSource:
             # 获取个股的概要信息
             # symbol: 股票代码
             # indicator: 用于指定获取信息的类型，这里用 '基本情况'
-            company_info_df = ak.stock_individual_info_em(symbol=symbol)
-            
-            if not company_info_df.empty:
-                info_dict = company_info_df.set_index('item')['value'].to_dict()
-                return info_dict # 返回字典形式
+            market_type = identify_market(symbol)
+            if market_type == MarketType.SH or market_type == MarketType.SZ:
+                company_info_df = ak.stock_individual_info_em(symbol=symbol)
+                
+                if not company_info_df.empty:
+                    info_dict = company_info_df.set_index('item')['value'].to_dict()
+                    return {
+                        "name": info_dict.get('股票简称'),
+                    }
+                else:
+                    logger.warning(f"未获取到 {symbol} 的东方财富个股基本情况。")
+                    return None
             else:
-                logger.warning(f"未获取到 {symbol} 的东方财富个股基本情况。")
-                return None
+                ticker = yf.Ticker("AAPL")
+                info = ticker.info
+                name = info.get("longName") or info.get("shortName")
+                return {
+                    "name": name,
+                }
         except Exception as e:
             logger.error(f"获取 {symbol} 东方财富个股基本情况失败: {e}")
             return None
@@ -230,10 +237,10 @@ stock_data_source = StockDataSource()
 
 if __name__ == "__main__":
     import orjson
-    res = stock_data_source.get_company_profile("300181")
-    logger.info(orjson.dumps(res,option=orjson.OPT_INDENT_2).decode())
+    # res = stock_data_source.get_company_profile("300181")
+    # logger.info(orjson.dumps(res,option=orjson.OPT_INDENT_2).decode())
     # df = stock_data_source.get_pe_pb("600519")
     # df = stock_data_source.get_all_a_shares()
     # df = stock_data_source.get_last_n_years_financials("600519")
-    # df = stock_data_source.get_kline("sh600845")
-    # logger.info(df.tail())
+    df = stock_data_source.get_kline("AAPL")
+    logger.info(df.tail())

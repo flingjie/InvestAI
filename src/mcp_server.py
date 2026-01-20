@@ -34,7 +34,7 @@ async def analyze_stock_tool(code: str):
     result = context['result']
     logger.info(f"股票 {fullcode} 分析结果: {result}")
     data = stock_data_source.get_company_profile(extract_code(fullcode))
-    stock_name = data.get('股票简称') 
+    stock_name = data.get('name') 
     result.update({
         "name": stock_name,
     })

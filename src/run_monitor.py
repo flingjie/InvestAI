@@ -26,7 +26,7 @@ def start_monitor():
     monitor.run()
 
 def start_scheduler():
-    logger.info("启动定时任务调度器")
+    logger.info(f"启动定时任务调度器 at {SCHEDULE_CONFIG.hour}:{SCHEDULE_CONFIG.minute}")
     scheduler = BlockingScheduler()
     scheduler.add_job(
         start_monitor,
