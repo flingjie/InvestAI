@@ -2,7 +2,6 @@ import os
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from log import logger
 
-
 # Initialize Jinja2 environment
 env = Environment(
     loader=FileSystemLoader(os.path.dirname(__file__)),

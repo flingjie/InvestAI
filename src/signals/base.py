@@ -3,9 +3,10 @@ from typing import Dict, Any
 from enum import Enum
 
 class TrendType(Enum):
-    UPTREND = "上升趋势，可以考虑买入"
-    NEUTRAL = "建议观望"
-    DOWNTREND = "弱势，请注意避险"
+    UPTREND = "Uptrend – buying could be considered"
+    NEUTRAL = "Neutral – recommended to wait and see"
+    DOWNTREND = "Downtrend – weak, exercise caution"
+
 
 
 class BaseSignal(ABC):

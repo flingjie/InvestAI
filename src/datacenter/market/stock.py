@@ -27,8 +27,8 @@ class StockDataSource:
                 if market_type == MarketType.SH or market_type == MarketType.SZ:
                         df = ak.stock_zh_a_daily(symbol=symbol, start_date="20200101", adjust=adjust)
                 elif market_type == MarketType.HK or market_type == MarketType.US:
-                    apple = yf.Ticker(symbol)
-                    df = apple.history(period="6mo", interval="1d")
+                    ticker = yf.Ticker(symbol)
+                    df = ticker.history(period="6mo", interval="1d")
                     df = df.reset_index()
                     df.columns = df.columns.str.lower()
                 else:
@@ -181,7 +181,7 @@ class StockDataSource:
                     logger.warning(f"未获取到 {symbol} 的东方财富个股基本情况。")
                     return None
             else:
-                ticker = yf.Ticker("AAPL")
+                ticker = yf.Ticker(symbol)
                 info = ticker.info
                 name = info.get("longName") or info.get("shortName")
                 return {

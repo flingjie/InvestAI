@@ -1,3 +1,6 @@
+system:
+  language: en
+
 llm:
   provider: openai
   base_model: qwen-flash
@@ -7,7 +10,7 @@ llm:
 
 schedule:
   hour: 14
-  minute: 05
+  minute: 07
 
 # =====================
 # 通知系统配置
@@ -22,7 +25,7 @@ notification:
   channels:
     # ========= Slack =========
     slack:
-      enabled: false
+      enabled: true
       type: slack
 
       token: ${SLACK_TOKEN} # 从环境变量注入
@@ -31,8 +34,8 @@ notification:
       message_format: markdown
 
       description: >
-        Slack 通知渠道，
-        用于实时策略信号、风险提醒与系统状态更新。
+        Slack notification channel,
+        used for real-time strategy signals, risk warnings, and system status updates.
 
     # ========= 通用 Webhook =========
     webhook:
@@ -44,7 +47,7 @@ notification:
           url: https://open.feishu.cn/open-apis/bot/v2/hook/xxxx
 
       description: >
-        用于对接飞书、企业微信等自定义通知系统。
+        Custom notification endpoint for integrating with Feishu, Lark, or other custom notification systems.
 
     # ========= Email =========
     email:
@@ -63,8 +66,8 @@ notification:
         - user@example.com
 
       description: >
-        仅用于高风险或关键异常提醒，
-        默认关闭。
+        Used for high-risk or critical exception notifications,
+        disabled by default.
 
     # ========= 控制台 / 日志 =========
     console:
@@ -72,5 +75,5 @@ notification:
       type: console
 
       description: >
-        本地开发与调试使用，
-        所有通知均输出到控制台。
+        Local development and debugging use,
+        all notifications are output to the console.

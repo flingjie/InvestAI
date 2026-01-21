@@ -6,160 +6,144 @@
 > AI helps you stay rational.
 > Decisions are still yours.
 
-## 效果示例
+## Project Overview
 
-**通知效果**: `./docs/notfication_demo.mp4`
+InvestAI is an AI-powered investment assistant designed for **everyday investors**.
 
-**对话效果**: `./docs/chat_demo.mp4`
+It does not place trades, and it does not make investment decisions for you.
+InvestAI focuses on only two things:
 
-## 项目简介
+* **Analyzing the market based on well-established trading rules**
+* **Highlighting signals that may deserve your attention at key moments**
 
-InvestAI 是一个面向 **普通投资者** 的 AI 投资辅助分析工具。
+Whether to buy, sell, or continue holding is **always a human decision**.
 
-它不自动下单，也不替你做投资决策。
-InvestAI 只做两件事：
-
-- **基于成熟的交易规则进行分析**
-- **在关键时刻提醒你可能需要关注的信号**
-
-最终是否买入、卖出、继续持有，**完全由人来决定**。
-
-这个项目的初衷并不是“提高胜率”，而是帮助投资者在真实市场中 **更稳定地执行一套长期有效的投资纪律**。
-
-## 为什么要做 InvestAI
-
-很多投资问题，并不是因为“不会选股”，而是因为：
-
-- 买入时太冲动
-- 下跌时扛不住
-- 盈利时拿不住
-- 事后才发现“其实当时已经偏离了原本的计划”
-
-规则本身并不复杂，**难的是长期、冷静、一致地执行**。
-
-InvestAI 的角色，是在你情绪最容易介入的时候，
-**把规则摆在你面前，提醒你现在发生了什么**。
-
-## 核心设计理念
-
-InvestAI 参考并吸收了如 **《海龟交易法则》** 等成熟的交易思想，但做了一个关键取舍：
-
-> **规则交给 AI 执行，决策权留给人。**
-
-核心理念包括：
-
-- 不追求每一次判断都正确
-- 接受小亏损作为正常成本
-- 严格区分「信号」和「决策」
-- 所有分析结果必须可解释、可回溯
-
-AI 负责 **提醒你规则是否被触发**，
-而不是告诉你“现在一定要买 / 一定要卖”。
-
-## InvestAI 能做什么
-
-对用户关注的股票，InvestAI 会基于既定规则进行持续分析，并输出：
-
-- 是否出现买入参考信号
-- 是否触发止损或风险提醒
-- 当前趋势是否仍然有效
-- 是否更适合继续观望
-
-这些结果本质上都是在回答一个问题：
-
-> **如果严格按这套规则，现在该怎么“看”这只股票？**
-
-## InvestAI 不做什么
-
-为了避免误解，InvestAI **刻意不提供**：
-
-- ❌ 自动交易或代下单
-- ❌ “必涨股”“强烈买入建议”
-- ❌ 短线预测或高频信号
-- ❌ 黑盒评分或不可解释结论
-
-它不是一个“荐股工具”，
-而是一个 **规则执行与提醒工具**。
-
-## 为什么用 AI，而不是传统指标工具？
-
-很多投资者已经会看指标，但问题在于：
-
-- 指标太多，不知道该信谁
-- 不同周期给出相互矛盾的信号
-- 情绪介入后，选择性忽略不利信息
-
-InvestAI 的作用是：
-
-- 把多条规则统一为一套可解释的分析流程
-- 始终按同一逻辑输出结论
-- 在你最容易忽略风险或过度乐观时，给出提醒
-
-它更像一个**冷静、不会和你吵架的投资提醒助手**。
+The goal of this project is not to “increase win rates,” but to help investors **consistently apply a long-term, disciplined investment approach in real market conditions.**
 
 ---
 
-## 示例策略规则
+## Why InvestAI Exists
 
-InvestAI 并不是随意“感觉分析”，而是围绕**一套明确、可配置的交易规则**运行。
+Many investment problems are not really about “not knowing how to pick stocks,” but about things like:
 
-下面是一个**示例趋势策略**，用于说明 InvestAI 是如何生成买入 / 卖出参考信号的。
+* Being impulsive when entering a position
+* Not being able to hold through declines
+* Taking profits too early
+* Only realizing afterward that you had already drifted away from your original plan
 
-> ⚠️ 这是示例策略规则，并非唯一或最优方案
-> 所有参数都可以根据个人风格调整
+The rules themselves are often not that complicated.
+What’s difficult is **executing them consistently, calmly, and over long periods of time**.
 
-## 1.大盘趋势与市场环境
+The role of InvestAI is to step in at the moments when emotions are most likely to interfere,
+and **put the rules back in front of you — reminding you what is actually happening right now.**
 
-在分析任何个股之前，InvestAI 会**先判断整体市场环境**。
+---
 
-因为在多数情况下：
+## Core Design Philosophy
 
-> **大盘决定成功率，个股决定收益空间。**
+InvestAI draws inspiration from established trading philosophies such as **The Turtle Trading Rules**, but makes one deliberate choice:
 
-```yaml
-market:
-  index: "沪深300" # 使用的市场指数
-  trend_ma_window: 50 # 大盘趋势判断均线
-  pullback_threshold: 0.02 # 大盘允许的回调幅度（2%）
+> **Let AI execute the rules. Keep decisions in human hands.**
 
-market_rsi:
-  min: 45
-  max: 70
-```
+Its core principles include:
 
-**策略含义：**
+* Not trying to be right every time
+* Accepting small losses as a normal cost
+* Clearly separating “signals” from “decisions”
+* Making every analysis explainable and traceable
 
-- 使用核心市场指数（如沪深 300）判断整体趋势方向
-- 当指数运行在中期趋势之上，视为「顺风环境」
-- 小幅回调（≤2%）仍允许个股策略生效
-- 若大盘跌破趋势结构或 RSI 过低，则进入谨慎状态
+AI’s responsibility is to **tell you whether a rule has been triggered**,
+not to tell you “you must buy” or “you must sell.”
 
-👉 AI 会先给出一个背景判断：
+---
 
-> 当前市场是在顺风、震荡，还是风险偏高的阶段？
+## What InvestAI Does
 
-## 2. 个股趋势与突破条件
+For the stocks you follow, InvestAI continuously analyzes them based on a fixed rule system and reports things like:
+
+* Whether a reference buy signal has appeared
+* Whether risk or stop-related conditions have been triggered
+* Whether the current trend structure is still intact
+* Whether the situation is better interpreted as a waiting phase
+
+At their core, these outputs are all answering one question:
+
+> **If you strictly followed this rule set, how should this stock be “viewed” right now?**
+
+---
+
+## What InvestAI Does *Not* Do
+
+To avoid misunderstandings, InvestAI deliberately does **not** provide:
+
+* ❌ Automated trading or order execution
+* ❌ “Sure-win stocks” or aggressive buy recommendations
+* ❌ Short-term predictions or high-frequency signals
+* ❌ Black-box scores or unexplained conclusions
+
+It is not a “stock-picking tool.”
+It is a **rule execution and rule awareness tool.**
+
+---
+
+## Why Use AI Instead of Traditional Indicator Tools?
+
+Many investors already know how to read indicators. The problem is that:
+
+* There are too many of them, and it’s unclear which to trust
+* Different timeframes give conflicting signals
+* Once emotions are involved, unfavorable information is often ignored
+
+InvestAI is meant to:
+
+* Integrate multiple rules into a single, explainable analytical process
+* Apply the same logic consistently, every time
+* Surface reminders precisely when risks are easiest to overlook or optimism becomes excessive
+
+It is closer to a **calm investment companion that doesn’t argue with you — but doesn’t indulge you either.**
+
+---
+
+## Example Strategy Rules
+
+InvestAI doesn’t rely on vague “gut feeling” analysis—it operates based on a **clear, configurable set of trading rules**.
+
+Below is an **example trend-following strategy** to illustrate how InvestAI generates buy/sell reference signals.
+
+> ⚠️ This is just an example strategy, not the only or optimal approach.
+> All parameters can be adjusted to fit individual trading styles.
+
+## 1. Market Trend and Environment
+
+Before analyzing any individual stock, InvestAI will **first assess the overall market environment**.
+
+Because in most cases:
+
+> **The market determines the probability of success, while individual stocks determine the potential return.**
+
+## 2. Individual Stock Trend and Breakout Conditions
 
 ```yaml
 trend:
-  pullback_threshold: 0.03 # 回调幅度（3%）
-  resistance_window: 20 # 阻力位计算窗口
-  breakout_buffer: 0.005 # 突破缓冲（0.5%）
+  pullback_threshold: 0.03 # Pullback threshold (3%)
+  resistance_window: 20 # Resistance window for breakout confirmation (N previous days)
+  breakout_buffer: 0.005 # Breakout buffer ratio (0.5%)
 ```
 
-**策略含义：**
+**Strategy Overview:**
 
-- 基于 ma20 和 ma60 分析股票的趋势
-- 等待价格出现 **可控幅度的回调（约 3%）**，避免追高
-- 使用最近 20 个交易日的价格区间来判断关键阻力位
-- 只有当价格 **有效突破阻力位**（并留出缓冲）时，才认为趋势可能继续
+- Based on **moving averages (ma20 and ma60)** to analyze stock trends.
+- Waits for **controllable pullbacks (≤3%)** to avoid overtrading.
+- Uses the **recent 20-day price range** to calculate key resistance levels.
+- Only when the price **breaks above the highest price in the past N days** (plus the buffer ratio),
+  is it considered a valid breakout.
 
-👉 AI 会判断：
+👉 AI will judge:
 
-> 这是趋势中的正常回调，
-> 还是在大盘走弱背景下的“被动下跌”？
+> Is this a normal pullback within the trend,
+> or is it a “passive decline” in a weak market environment?
 
-## 3. 成交量确认（Volume）
+## 3. Volume Confirmation (Volume)
 
 ```yaml
 volume:
@@ -167,18 +151,18 @@ volume:
   min_ratio: 1.0
 ```
 
-**策略含义：**
+**Strategy Overview:**
 
-- 使用 20 日平均成交量作为参考
-- 突破或反弹时，成交量需 **不低于均量水平**
-- 在大盘偏弱时，对成交量要求会更加严格
+- Uses **20-day moving average volume** as a reference.
+- When breaking above the moving average or rebounding, the volume must **not be lower than the moving average**.
+- In weak market environments, the volume requirements will be stricter.  
 
-👉 AI 会提醒你：
+👉 AI will remind you:
 
-> 在当前市场环境下，
-> 这次上涨是否真的有资金愿意参与？
+> In the current market environment,
+> is this breakout really supported by sufficient volume?
 
-## 4.动量过滤（RSI）
+## 4. Momentum Filtering (RSI)
 
 ```yaml
 rsi:
@@ -186,18 +170,18 @@ rsi:
   max: 65
 ```
 
-**策略含义：**
+**Strategy Overview:**
 
-- 不在情绪极端区间操作
-- RSI 过低：趋势可能已经转弱
-- RSI 过高：在弱市中尤其容易回撤
+- Does not operate in extreme emotion intervals.
+- RSI too low: The trend may have weakened. 
+- RSI too high: In weak market environments, it is more likely to be a short-term reversal.
 
-👉 AI 会结合大盘状态判断：
+👉 AI will combine the market environment to judge:
 
-> 这是健康的趋势动量，
-> 还是市场情绪推动下的短期波动？
+> Is this a healthy trend momentum,
+> or is it a short-term reversal driven by market emotions?
 
-## 5. 趋势健康度检查（CCI）
+## 5. Trend Health Check (CCI)
 
 ```yaml
 cci:
@@ -205,93 +189,103 @@ cci:
   max: 100
 ```
 
-**策略含义：**
+**Strategy Overview:**
 
-- 判断价格是否严重偏离均值
-- 过滤掉短期过热或恐慌的阶段
-- 在市场不稳定时，更倾向于保守解读信号
+- Judges whether the price is severly deviated from the mean.
+- Filters out short-term overheating or panic phases.   
+- In weak market environments, it is more likely to be a short-term reversal.
 
-👉 AI 会告诉你：
+👉 AI will tell you:
 
-> 在当前市场背景下，
-> 这个位置更像是机会，还是情绪噪音？
-
-## InvestAI 如何综合这些规则
-
-当你把一只股票加入关注列表后，InvestAI 会：
-
-1. **先判断大盘所处的市场环境**
-2. **再评估个股是否满足趋势与量价条件**
-3. **结合市场环境调整信号可信度**
-4. **生成可解释、带风险提示的分析结果**
-5. **在关键节点提醒你关注**
-
-示例提醒可能是：
-
-> -「个股趋势结构仍在，但大盘处于震荡期，成功率低于顺风阶段」 -「价格回调至策略区间，量能达标，但市场风险偏高，建议谨慎观察」 -「趋势与市场环境共振，属于相对有利的结构」
-
-📌 **InvestAI 提供的是“规则 + 环境下的参考判断”，不是操作指令。**
-
-## 适合人群
-
-- ✔ 长期投资或趋势交易的普通投资者
-- ✔ 希望减少情绪化操作的人
-- ✔ 已有基本投资认知，但执行不稳定的人
-
-不适合：
-
-- ❌ 寻找“快进快出”信号的人
-- ❌ 希望完全交给程序交易的人
-- ❌ 专业量化或高频交易场景
-
-## 部署与功能说明
-
-InvestAI 可以通过 **Docker 一键部署**，无需复杂环境配置。
-启动后，它会以两种方式协助你执行投资规则：
-
-- **后台定时监控**：替你持续盯规则、发提醒
-- **实时对话分析**：通过 AI 对话随时查看状态、调整策略
-
-### 1️⃣ 定时任务监控（无人值守）
-
-适合「不想盯盘，但希望规则持续执行」的场景。
-
-- 按设定周期，自动分析关注的股票列表
-- 基于既定规则判断趋势、回调、风险状态
-- 通过 **Slack / 飞书 / 企业微信** 推送提醒
-- 即使你不在线，也能在关键节点收到提示
-
-> 你只需要维护规则和关注列表，剩下的交给系统。
+> In the current market background,
+> this position is more likely to be an opportunity,
+> or is it just market noise driven by emotions?  
 
 ---
 
-### 2️⃣ 实时交互分析（对话式）
+## How InvestAI Integrates These Rules
 
-适合「想随时看看现在规则怎么想」的场景。
+When you add a stock to your watchlist, InvestAI will:
 
-通过 **Cherry Studio + MCP**，你可以用自然语言：
+1. **Assess the current market environment**
+2. **Evaluate whether the stock meets trend and volume/price conditions**
+3. **Adjust signal confidence based on the market context**
+4. **Generate interpretable analysis with risk reminders**
+5. **Notify you at key moments**
 
-- 查看当前关注的股票列表
-- 分析某一只股票的当前规则状态
-- 解释当前使用的策略逻辑
-- 根据你的投资风格，调整策略参数
+Example alerts might include:
 
-所有交互都围绕**规则的解释与状态描述**展开，而不是操作指令。
+> * “The stock’s trend structure is intact, but the market is in a sideways phase; success probability is lower than during a tailwind period.”
+> * “Price has pulled back into the strategy range and volume meets criteria, but market risk is elevated; exercise caution.”
+> * “Trend and market environment are aligned, indicating a relatively favorable setup.”
 
----
-
-## 二、快速开始
-
-### 环境准备
-
-请确保已安装：
-
-- Docker
-- [Cherry Studio](https://www.cherry-ai.com/)（提供 GUI 界面）
+📌 **InvestAI provides “rule- and environment-based reference judgments,” not trading instructions.**
 
 ---
 
-### 1️⃣ 克隆项目
+## Who It’s For
+
+* ✔ Individual investors pursuing **long-term or trend-based strategies**
+* ✔ Those who want to **reduce emotional trading**
+* ✔ Investors with basic knowledge but **inconsistent execution**
+
+Who It’s Not For
+
+* ❌ Those looking for **quick in-and-out signals**
+* ❌ Those wanting to **fully automate trading**
+* ❌ Professional **quantitative or high-frequency trading** scenarios
+
+---
+
+## Deployment & Features
+
+InvestAI can be deployed via **one-click Docker**, with no complex environment setup required. Once running, it assists your investment rules in two ways:
+
+* **Scheduled background monitoring** – continuously tracks rules and sends alerts
+* **Interactive real-time analysis** – check status and adjust strategies via AI dialogue
+
+---
+
+### 1️⃣ Scheduled Monitoring
+
+Ideal for users who **don’t want to watch the market but want rules to run continuously**.
+
+* Automatically analyzes your watchlist at set intervals
+* Assesses trends, pullbacks, and risk levels according to your rules
+* Sends alerts via **Slack / Lark / WeWork**
+* Key notifications reach you even when offline
+
+> You only need to maintain the rules and watchlist—the system handles the rest.
+
+---
+
+### 2️⃣ Real-Time Interactive Analysis 
+
+Ideal for users who **want to check rule-based analysis anytime**.
+
+Using **Cherry Studio + MCP**, you can interact in natural language to:
+
+* View your current watchlist
+* Analyze a stock’s current rule status
+* Understand the logic behind the applied strategy
+* Adjust strategy parameters according to your personal trading style
+
+All interactions focus on **explaining rules and status**, not issuing trading commands.
+
+---
+
+## 2. Quick Start
+
+### Environment Setup
+
+Make sure the following are installed:
+
+* Docker
+* [Cherry Studio](https://www.cherry-ai.com/) (provides a GUI interface)
+
+---
+
+### 1️⃣ Clone the Project
 
 ```bash
 git clone https://github.com/flingjie/InvestAI.git
@@ -300,239 +294,248 @@ cd InvestAI
 
 ---
 
-### 2️⃣ 配置文件说明
+### 2️⃣ Configuration Files
 
-#### （1）环境变量
+#### (1) Environment Variables
 
 ```bash
 cp .env.example .env
 ```
 
-编辑 `.env`：
+Edit the `.env` file:
 
-- 配置你使用的大模型 API Key（用于对话与策略解读）
-
----
-
-#### （2）核心配置
-
-- `invest_ai.yaml`
-
-  - 定时任务执行周期
-  - 通知渠道配置（Slack / 飞书 / 企业微信）
-
-- `watchlist.json`
-
-  - 维护你关注的股票列表（code + name）
+* Set your large model API key (used for dialogues and strategy interpretation)
 
 ---
 
-### 3️⃣ 启动服务
+#### (2) Core Configuration
 
-进入 docker 目录并启动：
+* `invest_ai.yaml`
+
+  * Scheduled task intervals
+  * Notification channels (Slack / Feishu / WeChat Work)
+
+* `watchlist.json`
+
+  * Maintain your stock watchlist (code + name)
+
+---
+
+### 3️⃣ Start the Service
+
+Go to the docker directory and start the service:
 
 ```bash
 cd docker
 docker-compose up -d
 ```
 
-检查运行状态：
+Check the running status:
 
 ```bash
 docker ps
 ```
 
-正常情况下可以看到 InvestAI 服务正在运行：
+If everything is working, you should see the InvestAI service running:
 
-![docker_ps.png](./docs/docker_ps.png)
+![docker\_ps.png](./docs/docker_ps.png)
 
-通知示例（Slack）：
+Example notifications (Slack):
 
-**📣 大盘趋势通知**
-![slack_notification.png](./docs/slack_notification.png)
-**📣 个股趋势通知**
-![slack_notification_2.png](./docs/slack_notification_2.png)
+**📣 Market Trend Notification**
+![slack\_notification.png](./docs/slack_notification_en.png)
+**📣 Stock Trend Notification**
+![slack\_notification\_2.png](./docs/slack_notification_2_en.png)
 
 ---
 
-## 三、在 Cherry Studio 中接入 InvestAI（MCP）
+## 3. Integrate InvestAI into Cherry Studio (MCP)
 
-### 1️⃣ 添加 MCP 服务
+### 1️⃣ Add an MCP Service
 
-打开 Cherry Studio：
+Open Cherry Studio:
 
-1. 点击 **设置 → MCP → 添加**
-2. 填写信息：
+1. Go to **Settings → MCP → Add**
+2. Fill in the details:
 
-- 名称：`InvestAI`（可自定义）
-- 类型：**可流式传输的 HTTP**
-- URL：`http://127.0.0.1:8888/mcp`
-- 请求头：
+* Name: `InvestAI` (can be customized)
+* Type: **HTTP (streaming supported)**
+* URL: `http://127.0.0.1:8888/mcp`
+* Request Headers:
 
 ```
 Content-Type=application/json
 Accept=application/json, text/event-stream
 ```
 
-![add_mcp.png](./docs/add_mcp.png)
-![add_mcp_2.png](./docs/add_mcp_2.png)
+![add\_mcp.png](./docs/add_mcp.png)
+![add\_mcp\_2.png](./docs/add_mcp_2.png)
 
 ---
 
-### 2️⃣ 创建对话助手
+### 2️⃣ Create a Chat Assistant
 
-1. 返回首页 → 左侧点击 **添加助手**
-2. 选择 **默认助手**
-3. 添加后，右键助手 → **编辑助手**
+1. Go back to the homepage → click **Add Assistant** on the left
+2. Select **Default Assistant**
+3. After adding, right-click the assistant → **Edit Assistant**
 
-![add_agent.png](./docs/add_agent.png)
+![add\_agent.png](./docs/add_agent.png)
 
 ---
 
-### 3️⃣ 设置助手提示词
+### 3️⃣ Set Up Assistant Prompts
 
-- 名称示例：`投资伴`（可自定义）
-- 提示词如下（建议原样使用）：
+* Example Name: `Invest Companion` (can be customized)
+* Use the following prompt (recommended to keep as-is):
 
 <details>
-<summary>👉 点击展开提示词</summary>
+<summary>👉 Click to expand the prompt</summary>
 
 ```
-你是 **InvestAI 助手**，像一个**经验丰富、冷静理性的老手投资伙伴**。
-你的任务是：
+You are the **InvestAI Assistant**, acting like an **experienced, calm, and rational investment partner**.
+Your role is:
 
-> 告诉用户规则系统现在看到的市场和个股状态，用自然、易懂的语言。
-> 你不会下单，不会预测涨跌，也不提供投资建议，只是用你的经验和规则观察帮用户理清当前情况。
+> Explain to the user the current market and individual stock conditions as seen through the rules system, using natural and easy-to-understand language.
+> You **do not place orders**, **do not predict price movements**, and **do not give investment advice**. Your job is only to help the user understand the current situation using your experience and the rule-based observations.
 
-你必须通过 **MCP 工具** 获取信息，尤其是股票分析类或关注列表操作，**不允许大模型凭自身知识或经验自行判断**。
-输出风格应像在跟一个普通投资者讲解：
+You **must use the MCP tools** to get information—especially for stock analysis or watchlist operations. **The model is not allowed to make judgments on its own based on knowledge or experience.**
 
-* 语气冷静、客观，但带点经验老手的口吻
-* 用自然语言解释规则触发、趋势、回调、突破、量能和动量情况
-* 让用户明白：规则在说什么、市场在走哪一步，而决策权永远在用户手中
+Your output style should feel like you are explaining to an ordinary investor:
 
-### 输入校验要求
+* Calm and objective, with the tone of a seasoned investor
+* Use natural language to describe rule triggers, trends, pullbacks, breakouts, volume, and momentum
+* Make it clear what the rules are signaling and where the market is moving, while emphasizing that **all decisions remain with the user**
 
-1. **分析股票**：必须提供股票 code，例如 “分析 000001”，并调用 MCP `analyze` 工具获取结果。
+---
 
-   * 如果用户没有输入 code，直接返回提示：
+### Input Validation Rules
 
-     > “请提供股票代码，才能进行分析。”
+1. **Analyze a stock**: Must provide a stock code, e.g., “analyze 000001”, and call the MCP `analyze` tool.
 
-2. **添加到关注列表**：必须提供股票 code，并调用 MCP `add_watchlist` 工具。
+   * If the user does not provide a code, respond with:
 
-   * 如果用户没有输入 code，直接返回提示：
+     > “Please provide a stock code so I can perform the analysis.”
 
-     > “请提供股票代码，才能添加到关注列表。”
+2. **Add to watchlist**: Must provide a stock code and call the MCP `add_watchlist` tool.
 
-3. **显示关注列表**：调用 MCP `get_watchlist` 工具，并列出每只股票的 **名称和 code**
+   * If the user does not provide a code, respond with:
 
-4. **获取或解释策略**：调用`explain_strategy_tool`取结果, 按工具返回内容进行输出。
+     > “Please provide a stock code to add it to your watchlist.”
 
-5. **调整或编辑策略**：调用`edit_strategy_tool`取更新建议，按工具返回内容进行输出。
+3. **Show watchlist**: Call the MCP `get_watchlist` tool and list each stock’s **name and code**.
 
-### 输出规范
+4. **Get or explain strategy**: Call `explain_strategy_tool` and output results according to the tool’s response.
 
-* 输出返回的文本内容即可
-* 每条信息用自然语言描述，不出现价格、指标或买卖建议
-* 当用户意图不明确时，可澄清需要分析、关注、获取列表或调整策略
+5. **Adjust or edit strategy**: Call `edit_strategy_tool` and output updates according to the tool’s response.
 
-### 风格示例
+---
 
-* “分析 000001” →
+### Output Guidelines
 
-  > “老实说，这只股票趋势还不算完全明朗，量能和动量也没完全配合，目前像是在消化阶段。”
+* Return only textual content
+* Describe everything in natural language; **do not include prices, indicators, or buy/sell instructions**
+* If the user’s intent is unclear, clarify whether they want to **analyze**, **watch**, **view the watchlist**, or **adjust a strategy**
 
-* “分析” →
+---
 
-  > “请提供股票代码，才能进行分析。”
+### Style Examples
 
-* “添加关注列表 000001” →
+* “analyze AAPL →
 
-  > “平安银行 (000001) 已添加到你的关注列表。”
+  > “Honestly, the trend for this stock isn’t fully clear yet. Volume and momentum aren’t completely aligned either—right now it seems to be in a consolidation phase.”
 
-* “添加关注列表” →
+* “analyze” →
 
-  > “请提供股票代码，才能添加到关注列表。”
+  > “Please provide a stock code so I can perform the analysis.”
 
-* “显示关注列表” →
+* “add to watchlist AAPL →
 
-  > “你目前关注的几只股票，我帮你列出来了：平安银行 (000001)、贵州茅台 (600519)、海康威视 (002415)。”
+  > “Apple Inc. (AAPL) has been added to your watchlist.”
 
-* “解释策略” →
+* “add to watchlist” →
 
-  > “这套策略偏中周期，主要看趋势和回调突破，并结合量价动量过滤，提醒你当前规则触发情况。”
+  > “Please provide a stock code to add it to your watchlist.”
+
+* “show watchlist” →
+
+  > “Here’s your current watchlist: Apple Inc. (AAPL).”
+
+* “explain strategy” →
+
+  > “This strategy focuses on medium-term trends, pullbacks, and breakouts, combined with volume and momentum filters. It shows you which rules are currently triggered.”
 
 ```
 
 </details>
 
-填写完成后点击 **保存**。
+Once completed, click **Save**.
 
 ![edit_agent.png](./docs/edit_agent.png)
 
 ---
 
-### 4️⃣ 启用 MCP 服务
+### 4️⃣ Enable MCP Service
 
-- 切换到 MCP 页面
-- 启用 InvestAI
-- 点击右上角关闭接口窗口
+- Go to **Settings → MCP**
+- Enable **InvestAI**
+- Click the top-right close button to exit the interface
 
 ![open_mcp.png](./docs/open_mcp.png)
 
 ---
 
-## 四、开始使用
+## 4. Getting Started
 
-选择刚创建的助手即可开始对话。
-当前测试模型为 **qwen-plus**，效果稳定，其他模型可自行尝试。
+Select the newly created assistant to begin chatting.
+The current test model is **qwen-plus**, which is stable and effective.
+Other models can be experimented with as well.
 
 ![start_chat.png](./docs/start_chat.png)
 
 ---
 
-## 五、示例对话
+## 5. Example Dialogues
 
-### 查看关注列表
+### View Watchlist
 
-输入：
+Input:
 
-> 当前关注列表
+> Current watchlist
 
-![watch_list.png](./docs/watchlist.png)
-
----
-
-### 分析个股
-
-输入：
-
-> 分析 000001
-
-![analyse_stock.png](./docs/analyse_stock.png)
+![watch_list.png](./docs/watchlist_en.png)
 
 ---
 
-### 解释当前策略
+### Analyze Stock
 
-输入：
+Input:
 
-> 解释策略
+> Analyze AAPL
 
-![explain_strategy.png](./docs/explain_strategy.png)
+![analyse_stock.png](./docs/analyse_stock_en.png)
 
 ---
 
-### 调整策略风格
+### Explain Current Strategy
 
-输入：
+Input:
 
-> 我是一个激进的交易者，该如何调整策略
+> Explain strategy
 
-![edit_strategy.png](./docs/edit_strategy.png)
+![explain_strategy.png](./docs/explain_strategy_en.png)
 
-## 免责声明
+---
 
-InvestAI 仅提供基于规则的投资分析与提醒，不构成任何投资建议。
-所有交易决策均由用户自行判断并承担风险。
+### Adjust Strategy Style
+
+Input:
+
+> I am a aggressive trader, how should I adjust the strategy
+
+![edit_strategy.png](./docs/edit_strategy_en.png)
+
+## Disclaimer
+
+InvestAI provides rule-based investment analysis and reminders only.
+It does not constitute any investment advice.
+All trading decisions are subject to the user's own judgment and risk.

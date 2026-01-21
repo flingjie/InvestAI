@@ -1,68 +1,73 @@
 strategy:
   id: trend_following_basic
-  name: 趋势跟随基础策略
+  name: Basic Trend-Following Strategy
   version: "1.0"
   description: >
-    一套基于均线趋势判断、回调与突破确认，
-    并结合成交量与动量指标进行过滤的中周期策略。
-    本策略不预测涨跌，仅用于识别趋势状态变化。
+    A medium-term strategy that follows price trends based on moving averages,
+    with pullback and breakout confirmations,
+    and filters out volatile periods using volume and momentum indicators.
+    This strategy does not predict price movements,
+    but instead identifies trend status changes.
 
 # =====================
-# 趋势相关配置
+# Trend-Following Configuration
 # =====================
 trend:
   moving_averages:
-    short: 20 # 短期均线周期（如 MA20）
-    long: 60 # 长期均线周期（如 MA60）
+    short: 20 # Short-term moving average period (e.g., MA20)
+    long: 60 # Long-term moving average period (e.g., MA60)
 
   pullback:
     enabled: true
-    threshold: 0.03 # 回调幅度阈值（3%）
+    threshold: 0.03 # Pullback threshold (3%)
     description: >
-      当价格短暂跌破短期均线，但仍位于长期均线之上，
-      且回调幅度不超过该比例时，视为趋势内正常回调。
+      When the price briefly falls below the short-term moving average
+      but is still above the long-term moving average,
+      and the pullback does not exceed this ratio,
+      it is considered a normal pullback within the trend.
 
   breakout:
-    resistance_window: 20 # 阻力位回看窗口
-    buffer: 0.005 # 突破确认缓冲（0.5%）
+    resistance_window: 20 # Resistance window for breakout confirmation (N previous days)
+    buffer: 0.005 # Breakout buffer ratio (0.5%)
     description: >
-      价格突破过去 N 个交易日的最高价，
-      且超过设定缓冲比例，才被视为有效突破。
+      When the price breaks above the highest price in the past N days,
+      and exceeds the set buffer ratio,
+      it is considered a valid breakout.
 
 # =====================
-# 成交量过滤配置
+# Volume Filter Configuration 
 # =====================
 volume:
   ma_window: 20
-  min_ratio: 1.0 # 当前成交量需 ≥ 均量 * 1.0
+  min_ratio: 1.0 # Current volume must be ≥ moving average volume * 1.0
   description: >
-    用于过滤无量上涨或流动性不足的行情，
-    确保信号发生时市场参与度正常。
+    Used to filter out volatile periods or periods with insufficient liquidity,
+    ensuring that signals occur when market activity is normal.
 
 # =====================
-# RSI 动量区间过滤
+# RSI Momentum Interval Filtering
 # =====================
 rsi:
   min: 40
   max: 65
   description: >
-    RSI 位于中性偏强区间，
-    避免在过热或明显弱势状态下介入。
+    RSI is in the neutral strong interval,
+    avoiding entry in overheated or clearly weak states.
 
 # =====================
-# CCI 趋势强度过滤
+# CCI Trend Strength Filtering
 # =====================
 cci:
   min: -100
   max: 100
   description: >
-    CCI 处于常规波动区间，
-    用于排除极端超买或超卖环境下的噪声信号。
+    CCI is in the regular fluctuation interval,
+    used to exclude noise signals in extreme overbought or oversold environments.
 
 # =====================
-# 风险声明（仅用于展示/解释）
+# Risk Disclaimer (Only for Demonstration/Explanation)
 # =====================
 risk_disclaimer:
-  - 本策略不保证盈利
-  - 所有信号仅代表规则状态变化
-  - 投资决策需用户自行判断
+  - This strategy does not guarantee profit
+  - All signals represent only rule status changes
+  - Investment decisions should be made by users themselves

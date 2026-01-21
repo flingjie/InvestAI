@@ -89,3 +89,8 @@ class LLMConfig(BaseModel):
     reason_model: str
     base_url: str
     api_key: Optional[str] = None
+
+
+class SysConfig(BaseModel):
+    language: str
+

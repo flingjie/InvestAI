@@ -19,55 +19,61 @@ mcp = FastMCP("InvestAI 🚀")
 @mcp.tool()
 async def analyze_stock_tool(code: str):
     """
-    分析特定code的股票
+    Analyze a specific stock by its code
 
-    参数:
-        code: 股票代码
+    Parameters:
 
-    返回:
-    字符串，包含股票分析结果。
+    * code: stock ticker symbol
+
+    Returns:
+
+    * A string containing the stock analysis result.
     """
     fullcode = get_fullcode(code)
-    logger.info(f"分析股票 {fullcode}")
+    logger.info(f"Analyzing stock {fullcode}")
     signal_engine = SignalEngine()
     context = signal_engine.evaluate(fullcode)
     result = context['result']
-    logger.info(f"股票 {fullcode} 分析结果: {result}")
+    logger.info(f"Stock {fullcode} analysis result: {result}")
     data = stock_data_source.get_company_profile(extract_code(fullcode))
     stock_name = data.get('name') 
     result.update({
         "name": stock_name,
     })
     message = format_trend_signal_message(result)
+    logger.info(message)
     return message
 
 
 @mcp.tool()
 async def add_watchlist_tool(code: str):
     """
-    将特定股票code到关注列表
+    Add a specific stock code to the watchlist
 
-    参数:
-        code: 股票代码
+    Parameters:
 
-    返回:
-    字符串，包含成功信息。
+    * code: stock ticker symbol
+
+    Returns:
+
+    * A string containing the success message.
     """
     fullcode = get_fullcode(code)
     logger.info(f"get company profile for {code}")
     data = stock_data_source.get_company_profile(extract_code(fullcode))
-    name = data.get('股票简称') 
-    logger.info(f"添加股票 {fullcode}({name}) 到关注列表")
+    name = data.get('name') 
+    logger.info(f"Add stock {fullcode}({name}) to watchlist")
     add_to_watchlist(WATCHLIST_PATH, {"code": fullcode, "name": name})
-    return f"{fullcode}({name}) 已添加到关注列表"
+    return f"{fullcode}({name}) has been added to watchlist"
 
 @mcp.tool()
 async def get_watchlist_tool():
     """
-    获取当前关注的股票列表
+    Get the current watchlist
 
-    返回:
-    字符串，包含关注列表。
+    Returns:
+
+    * A string containing the watchlist.
     """
     watchlist = load_watchlist(WATCHLIST_PATH)
     return watchlist
@@ -76,10 +82,11 @@ async def get_watchlist_tool():
 @mcp.tool()
 async def explain_strategy_tool():
     """
-    对当前策略配置进行可读解释
+    Explain the current strategy configuration in a readable manner
 
-    返回:
-    字符串，包含策略解释文本。
+    Returns:    
+
+    * A string containing the strategy explanation.
     """
     strategy = explain_strategy(STRATEGY_CONFIG)
     return strategy
@@ -87,13 +94,15 @@ async def explain_strategy_tool():
 @mcp.tool()
 async def edit_strategy_tool(user_input: str):
     """
-    根据用户输入更新策略配置
+    Edit the strategy configuration based on user input
 
-    参数:
-        user_input: 用户输入的偏好或调整描述
+    Parameters:
 
-    返回:
-    字符串，包含编辑后的策略配置文本。
+    * user_input: user input describing the preferences or adjustments
+
+    Returns:    
+
+    * A string containing the edited strategy configuration.
     """
     with open(STRATEGY_CONFIG_PATH, "r", encoding="utf-8") as f:
         raw = yaml.safe_load(f)
@@ -101,6 +110,6 @@ async def edit_strategy_tool(user_input: str):
     return strategy
 
 
-# ----------- 启动服务器 ------------
+# ----------- start server ------------
 if __name__ == "__main__":
     mcp.run(transport="http", host="0.0.0.0", port=8888)

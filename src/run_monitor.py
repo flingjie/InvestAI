@@ -26,13 +26,12 @@ def start_monitor():
     monitor.run()
 
 def start_scheduler():
-    logger.info(f"启动定时任务调度器 at {SCHEDULE_CONFIG.hour}:{SCHEDULE_CONFIG.minute}")
+    logger.info(f"Start scheduler at {SCHEDULE_CONFIG.hour}:{SCHEDULE_CONFIG.minute}")
     scheduler = BlockingScheduler()
     scheduler.add_job(
         start_monitor,
         CronTrigger(hour=SCHEDULE_CONFIG.hour, minute=SCHEDULE_CONFIG.minute),
-        coalesce=True,
-        misfire_grace_time=3600  # 允许 1 小时内补跑
+        coalesce=True
     )
     scheduler.start()
 
